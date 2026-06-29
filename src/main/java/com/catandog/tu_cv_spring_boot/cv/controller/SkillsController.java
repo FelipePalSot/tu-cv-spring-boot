@@ -61,5 +61,14 @@ public class SkillsController {
 
 //        Es el patrón Post-Redirect-Get (PRG).
 
+    @GetMapping("/{index}")
+    public String showSkillDEtail(@PathVariable int index, Model model){
+        if(index>=0 && index < skills.size()){
+            Skill skill = skills.get(index);
+            model.addAttribute("skill", skill);
+            return "skill-detail";
+        }
+        return "redirect:/skills";
+    }
 
 }
