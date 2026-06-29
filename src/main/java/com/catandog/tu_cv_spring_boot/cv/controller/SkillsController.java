@@ -59,7 +59,10 @@ public class SkillsController {
 //        sino una instrucción para que Spring le diga al
 //        navegador que vaya a la URL /skills.
 
-//        Es el patrón Post-Redirect-Get (PRG).
+//        Es el patrón Post-Redirect-Get (PRG) y es algo que no hemos visto aun
+
+    //PRueba sin stageado
+
 
     @GetMapping("/{index}")
     public String showSkillDEtail(@PathVariable int index, Model model){
