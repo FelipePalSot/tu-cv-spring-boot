@@ -4,6 +4,7 @@ import com.catandog.tu_cv_spring_boot.cv.model.Skill;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,16 +88,73 @@ public class SkillsController {
         return "skills";
     }
 
+//        @GetMapping("/name/{name}")
+//       public String showFilteredSkill(@PathVariable String name,  Model model){
+//
+//          List<Skill> skillsFilter = skills.stream()
+//                   .filter(skill -> skill.getName().equalsIgnoreCase(name)
+//                   )
+//                   .toList();
+//           if(skillsFilter.isEmpty()){
+//
+//           model.addAttribute("filterMessage", "No se encontraron resultados para: " + name);
+//
+//               return "forward:/skills";
+//           }
+//           model.addAttribute("skills", skillsFilter);
+//           model.addAttribute("filterMessage", "Filtro: " + name);
+//            return "skills";
+//       }
+
+
     @GetMapping("/name/{name}")
-    public String showFilteredSkill(@PathVariable String name ,Model model){
+    public String showFilteredSkill(@PathVariable String name,  RedirectAttributes redirectAttributes){
+
+        ArrayList<Integer> numbers = new ArrayList<Integer>();
+
         List<Skill> skillsFilter = skills.stream()
                 .filter(skill -> skill.getName().equalsIgnoreCase(name)
                 )
                 .toList();
-        model.addAttribute("skills",skillsFilter);
-        model.addAttribute("filterMessage","Filtro: "+name );
+        if(skillsFilter.isEmpty()){
 
-        return "skills";
+            redirectAttributes.addFlashAttribute("filterMessage", "No se encontraron resultados para: " + name);
+            return "redirect:/skills?filter="+name;
+        }
+        redirectAttributes.addFlashAttribute("filterMessage", "Filtro: " + name);
+        return "redirect:/skills?filter="+name;
     }
+
+//    @GetMapping("/name/{name}")
+//    public String showFilteredSkill(@PathVariable String name,  RedirectAttributes redirectAttributes){
+//
+//        List<Skill> skillsFilter = skills.stream()
+//                .filter(skill -> skill.getName().equalsIgnoreCase(name)
+//                )
+//                .toList();
+//        if(skillsFilter.isEmpty()){
+//
+//            redirectAttributes.addFlashAttribute("filterMessage", "No se encontraron resultados para: " + name);
+//            return "redirect:/skills?filter="+name;
+//        }
+//        redirectAttributes.addFlashAttribute("filterMessage", "Filtro: " + name);
+//        return "redirect:/skills?filter="+name;
+//    }
+
+
+//    @GetMapping("/name/{name}")
+//    public String showFilteredSkill(@PathVariable String name, RedirectAttributes redirectAttributes) {
+//
+//        boolean hasResults = skills.stream()
+//                .anyMatch(skill -> skill.getName().equalsIgnoreCase(name));
+//
+//        if (!hasResults) {
+//            redirectAttributes.addFlashAttribute("filterMessage", "No results found for: " + name);
+//        } else {
+//            redirectAttributes.addFlashAttribute("filterMessage", "Filter: " + name);
+//        }
+//
+//        return "redirect:/skills?filter=" + name;
+//    }
 
 }
